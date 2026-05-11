@@ -1,0 +1,138 @@
+/* --- Root Settings --- */
+:root {
+    --royal-blue: #1a2a6c;
+    --deep-black: #050505;
+    --gold-accent: #d4af37;
+    --off-white: #aaaaaa;
+    --greek-border: 0.2rem double var(--gold-accent);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    /* Setting base font-size to 16px so 1rem = 16px */
+    font-size: 100%; 
+}
+
+body.macedon-theme {
+    font-family: 'Times New Roman', serif;
+    background: linear-gradient(180deg, var(--royal-blue) 0%, var(--deep-black) 100%);
+    background-attachment: fixed;
+    color: var(--off-white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.6;
+}
+
+/* --- Navigation --- */
+.nav-bar {
+    width: 100%;
+    padding: 1.5rem;
+    border-bottom: var(--greek-border);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.nav-bar nav {
+    display: flex;
+    justify-content: flex-start;
+    gap: 2rem;
+}
+
+.nav-bar a {
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+/* --- Containers --- */
+.home-container, .chat-container, .content {
+    padding: 2rem;
+    max-width: 40rem; /* Mobile optimized width */
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* --- Typography --- */
+h1 {
+    font-size: 2.5rem;
+    color: var(--gold-accent);
+    margin-bottom: 1.5rem;
+    text-shadow: 0.1rem 0.1rem 0.3rem rgba(0,0,0,0.8);
+    text-transform: uppercase;
+}
+
+h2, h3 {
+    color: var(--gold-accent);
+    margin-top: 2rem;
+}
+
+p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Buttons --- */
+.main-btn {
+    background-color: var(--gold-accent);
+    color: var(--deep-black);
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0.2rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.5);
+    transition: transform 0.2s ease;
+    margin-top: 2rem;
+}
+
+.main-btn:active {
+    transform: scale(0.95);
+}
+
+/* --- Chat Specifics --- */
+#chat-window {
+    height: 60vh;
+    border: var(--greek-border);
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.input-area {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 0.1rem solid var(--gold-accent);
+    color: white;
+    border-radius: 0.3rem;
+}
+
+.input-area button {
+    background: var(--gold-accent);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* --- Mobile First Adjustments --- */
+@media (min-width: 48rem) {
+    /* Scales up for tablets and desktops */
+    h1 { font-size: 3.5rem; }
+    .home-container, .content { padding-top: 5rem; }
+}
