@@ -16,6 +16,7 @@
 html {
     /* Setting base font-size to 16px so 1rem = 16px */
     font-size: 100%; 
+    background-color: var(--deep-black);
 }
 
 body.macedon-theme {
@@ -99,18 +100,29 @@ p {
 
 /* --- Chat Specifics --- */
 #chat-window {
-    height: 60vh;
-    border: var(--greek-border);
-    background: rgba(255, 255, 255, 0.05);
-    margin-bottom: 1rem;
-    padding: 1rem;
+    height: 30rem; 
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     overflow-y: auto;
-    text-align: left;
+    padding: 1.5rem;
+    border: var(--greek-border);
+    background: rgba(0, 0, 0, 0.4);
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+#chat-window::-webkit-scrollbar {
+    width: 0.4rem;
+}
+#chat-window::-webkit-scrollbar-thumb {
+    background: var(--gold-accent);
 }
 
 .input-area {
     display: flex;
     gap: 0.5rem;
+    margin-top: 1.5rem; /* Fix: Creates the gap between the window and the inputs */
 }
 
 .input-area input {
@@ -120,6 +132,7 @@ p {
     border: 0.1rem solid var(--gold-accent);
     color: white;
     border-radius: 0.3rem;
+    font-family: inherit;
 }
 
 .input-area button {
@@ -128,11 +141,94 @@ p {
     padding: 0.8rem 1.5rem;
     cursor: pointer;
     font-weight: bold;
+    color: var(--deep-black);
+    border-radius: 0.3rem;
+}
+
+.input-area button:disabled {
+    background: #555555;
+    color: #888888;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.msg-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%; /* Ensures bubbles don't hit the opposite edge */
+}
+
+.ai-name {
+    font-size: 0.75rem;
+    color: var(--gold-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    margin-bottom: 0.3rem;
+    font-family: serif;
+}
+
+.bubble {
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.4;
+    position: relative;
+    width: fit-content; /* Fix: Bubble only grows as wide as the text content */
+    word-wrap: break-word; /* Fix: Forces long words to wrap instead of breaking the layout */
+}
+
+.msg-ai {
+    align-self: flex-start;
+}
+
+.msg-ai .bubble {
+    background: rgba(26, 42, 108, 0.8);
+    color: var(--off-white);
+    border-left: 0.2rem solid var(--gold-accent);
+}
+
+.msg-user {
+    align-self: flex-end;
+}
+
+.msg-user .bubble {
+    background: var(--gold-accent);
+    color: var(--deep-black);
+    font-weight: bold;
+    border-radius: 0.5rem 0.5rem 0 0.5rem;
+    text-align: right;
+}
+
+.typing {
+    display: flex;
+    gap: 0.3rem;
+    padding: 0.5rem 0;
+}
+
+.dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--gold-accent);
+    border-radius: 50%;
+    /* This animation property makes them bounce */
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+/* Staggering the dots so they don't bounce at the same time */
+.dot:nth-child(1) { animation-delay: -0.32s; }
+.dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
 }
 
 /* --- Mobile First Adjustments --- */
 @media (min-width: 48rem) {
-    /* Scales up for tablets and desktops */
     h1 { font-size: 3.5rem; }
     .home-container, .content { padding-top: 5rem; }
+    .chat-container { padding-top: 3rem; }
+    #chat-window { 
+        height: 35rem;
+    }
 }

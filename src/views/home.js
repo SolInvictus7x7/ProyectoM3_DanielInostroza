@@ -8,7 +8,7 @@ export function renderHome() {
     </header>
     <section class="home-container">
         <h1>Bienvenido al pasado clásico.</h1>
-        <p>Prepárate para hablar con el individuo más influyente del mundo antiguo.</p>
+        <p>Prepárate para hablar con Alejandro Magno, el conquistador de mundos.</p>
         <button class="main-btn" href="/chat" data-route="chat">Comenzar a chatear</button>
     </section>
   `;
