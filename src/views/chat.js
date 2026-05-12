@@ -1,4 +1,3 @@
-// 1. Persistence Logic: This array lives as long as the app is not refreshed.
 let messages = [
     { sender: "ai", text: "Saludos, viajero del tiempo. ¿Qué noticias traes de las tierras lejanas?" }
 ];
@@ -13,8 +12,7 @@ export function renderChat() {
         </nav>
     </header>
     <section class="chat-container">
-        <div id="chat-window">
-            </div>
+        <div id="chat-window"></div>
         <div class="input-area">
             <input type="text" id="user-input" placeholder="Escribe un mensaje...">
             <button id="send-btn">Enviar</button>
@@ -22,8 +20,7 @@ export function renderChat() {
     </section>
   `;
 
-    // 2. Load History: Immediately render whatever is in the messages array
-    const chatWindow = document.querySelector("#app #chat-window");
+    const chatWindow = document.querySelector("#chat-window");
     messages.forEach(msg => {
         appendMessageToDOM(msg.sender, msg.text);
     });
@@ -35,29 +32,54 @@ function initChatLogic() {
     const sendBtn = document.querySelector("#send-btn");
     const userInput = document.querySelector("#user-input");
 
-    const handleSend = () => {
+    const handleSend = async () => {
         const text = userInput.value.trim();
-        // Modification: Check if the button is disabled to prevent "Enter" spam
+        
         if (text !== "" && !sendBtn.disabled) {
-            // 1. Lock the UI immediately
             setChatLock(true);
-
-            messages.push({ sender: "user", text });
+            
+            // 1. Update UI and History immediately for the User message
+            const userMsg = { sender: "user", text };
+            messages.push(userMsg);
             appendMessageToDOM("user", text);
             userInput.value = "";
-
             showTypingIndicator();
 
-            setTimeout(() => {
-                hideTypingIndicator();
-                const aiResponse = "Por las crines de Bucéfalo, lo que dices es intrigante. Debo meditar sobre esto.";
+            const payload = {
+                model: "gemini-2.5-flash",
+                system: "Eres Alejandro Magno, Rey de Macedonia. Responde con nobleza y autoridad. Usa metáforas militares o filosóficas.",
+                messages: messages 
+            };
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const data = await response.json();
                 
+                // Logging tokens from the backend response
+                console.log(`Input tokens: ${data.usage.input_tokens}`);
+                console.log(`Output tokens: ${data.usage.output_tokens}`);
+
+                const aiResponse = data.reply;
+                hideTypingIndicator();
+                
+                // 2. Add AI response to history and UI
                 messages.push({ sender: "ai", text: aiResponse });
                 appendMessageToDOM("ai", aiResponse);
 
-                // 2. Unlock the UI after the AI replies
+            } catch (error) {
+                hideTypingIndicator();
+                appendMessageToDOM("ai", "Mis mensajeros han sido interceptados. Prueba de nuevo.");
+                console.error("Chat Error:", error);
+            } finally {
                 setChatLock(false);
-            }, 2000);
+            }
         }
     };
 
@@ -67,7 +89,6 @@ function initChatLogic() {
     });
 }
 
-// Helper to render HTML without saving to state
 function appendMessageToDOM(sender, text) {
     const chatWindow = document.querySelector("#chat-window");
     if (!chatWindow) return;
@@ -105,18 +126,12 @@ function showTypingIndicator() {
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
-// New Helper Function
 function setChatLock(isLocked) {
     const sendBtn = document.querySelector("#send-btn");
     const userInput = document.querySelector("#user-input");
-
-    sendBtn.disabled = isLocked;
-    userInput.disabled = isLocked;
-
-    // Optional: Keep focus on the input after unlocking for better UX
-    if (!isLocked) {
-        userInput.focus();
-    }
+    if (sendBtn) sendBtn.disabled = isLocked;
+    if (userInput) userInput.disabled = isLocked;
+    if (!isLocked && userInput) userInput.focus();
 }
 
 function hideTypingIndicator() {
