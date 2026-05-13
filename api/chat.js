@@ -12,9 +12,11 @@ export default async function handler(req, res) {
       systemInstruction: system
     });
 
-    const lastMessage = messages[messages.length - 1].text;
+    const limitedMessages = messages.slice(-8); 
 
-    const historyData = messages
+    const lastMessage = limitedMessages[limitedMessages.length - 1].text;
+
+    const historyData = limitedMessages
       .slice(0, -1) 
       .filter((msg, index) => !(index === 0 && msg.sender === 'ai'))
       .map(msg => ({
@@ -30,8 +32,8 @@ export default async function handler(req, res) {
     return res.status(200).json({ 
       reply: text,
       usage: {
-        input_tokens: 112, 
-        output_tokens: 55
+        input_tokens: response.usageMetadata?.promptTokenCount || 0, 
+        output_tokens: response.usageMetadata?.candidatesTokenCount || 0
       }
     });
 

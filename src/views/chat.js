@@ -44,10 +44,13 @@ function initChatLogic() {
             userInput.value = "";
             showTypingIndicator();
 
+            const limitedMessages = messages.slice(-8);
+
             const payload = {
                 model: "gemini-2.5-flash",
                 system: "Eres Alejandro Magno, Rey de Macedonia. Responde con nobleza y autoridad. Usa metáforas militares o filosóficas.",
-                messages: messages 
+                max_tokens: 80,
+                messages: limitedMessages 
             };
 
             try {
@@ -60,10 +63,9 @@ function initChatLogic() {
                 if (!response.ok) throw new Error('Network response was not ok');
 
                 const data = await response.json();
-                
-                // Logging tokens from the backend response
-                console.log(`Input tokens: ${data.usage.input_tokens}`);
-                console.log(`Output tokens: ${data.usage.output_tokens}`);
+
+                const usage = data.usage || {};
+                console.log(`[Tokens] input: ${usage.input_tokens}, output: ${usage.output_tokens}`);
 
                 const aiResponse = data.reply;
                 hideTypingIndicator();
