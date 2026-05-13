@@ -8,16 +8,12 @@ export default async function handler(req, res) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     
     const model = genAI.getGenerativeModel({ 
-      model: modelName,
+      model: "gemini-2.5-flash",
       systemInstruction: system
     });
 
-    // The logic to extract history while respecting Gemini's 'User First' rule:
     const lastMessage = messages[messages.length - 1].text;
-    
-    // We filter the history: 
-    // 1. Exclude the last message (it's sent via sendMessage).
-    // 2. Ensure the first message in this specific array is not from the AI.
+
     const historyData = messages
       .slice(0, -1) 
       .filter((msg, index) => !(index === 0 && msg.sender === 'ai'))

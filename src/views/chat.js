@@ -38,7 +38,6 @@ function initChatLogic() {
         if (text !== "" && !sendBtn.disabled) {
             setChatLock(true);
             
-            // 1. Update UI and History immediately for the User message
             const userMsg = { sender: "user", text };
             messages.push(userMsg);
             appendMessageToDOM("user", text);
@@ -69,7 +68,6 @@ function initChatLogic() {
                 const aiResponse = data.reply;
                 hideTypingIndicator();
                 
-                // 2. Add AI response to history and UI
                 messages.push({ sender: "ai", text: aiResponse });
                 appendMessageToDOM("ai", aiResponse);
 
