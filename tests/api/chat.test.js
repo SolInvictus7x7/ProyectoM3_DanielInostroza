@@ -2,23 +2,20 @@ import { describe, it, expect, vi } from 'vitest';
 
 // Mock gemini API D:
 vi.mock('@google/generative-ai', () => {
-  const MockGoogleGenerativeAI = vi.fn().mockImplementation(() => {
-    return {
-      getGenerativeModel: vi.fn().mockReturnValue({
-        startChat: vi.fn().mockReturnValue({
-          sendMessage: vi.fn().mockResolvedValue({
+  class MockGoogleGenerativeAI {
+    getGenerativeModel() {
+      return {
+        startChat: () => ({
+          sendMessage: async () => ({
             response: {
               text: () => 'Hacia la victoria!',
-              usageMetadata: { 
-                promptTokenCount: 50, 
-                candidatesTokenCount: 20 
-              }
+              usageMetadata: { promptTokenCount: 50, candidatesTokenCount: 20 }
             }
           })
         })
-      })
-    };
-  });
+      };
+    }
+  }
 
   return {
     GoogleGenerativeAI: MockGoogleGenerativeAI
