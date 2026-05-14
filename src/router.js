@@ -9,6 +9,7 @@ const routes = {
   "/about": renderAbout,
 };
 
+//Código central se ejecuta en src/index.js
 export function router() {
   const path = window.location.pathname;
   const render = routes[path] || renderNotFound;

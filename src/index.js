@@ -1,7 +1,7 @@
 import { router } from './router.js';
 
 
-//Archivo maneja la lógica de la SPA
+//código central de la SPA
 window.addEventListener('popstate', router);
 
 document.addEventListener('click', (e) => {
