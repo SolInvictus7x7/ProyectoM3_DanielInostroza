@@ -232,3 +232,54 @@ p {
         height: 35rem;
     }
 }
+
+/* --- 404 Not Found Specifics --- */
+.not-found-container {
+    padding: 2rem;
+    max-width: 40rem;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+}
+
+.not-found-container h1 {
+    font-size: 8rem;
+    margin-bottom: 0;
+    line-height: 1;
+    opacity: 0.5;
+    border-bottom: var(--greek-border);
+}
+
+.not-found-container p {
+    font-style: italic;
+    margin-top: 1.5rem;
+}
+
+.not-found-container .main-btn {
+    margin-bottom: 2rem;
+}
+
+.not-found-container a {
+    color: var(--gold-accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 0.2s ease;
+}
+
+.not-found-container a:hover {
+    border-bottom: 1px solid var(--gold-accent);
+}
+
+/* Tablet/Desktop adjustment for 404 */
+@media (min-width: 48rem) {
+    .not-found-container h1 {
+        font-size: 12rem;
+    }
+}
