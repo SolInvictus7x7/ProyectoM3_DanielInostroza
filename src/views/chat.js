@@ -35,6 +35,7 @@ function initChatLogic() {
     const handleSend = async () => {
         const text = userInput.value.trim();
         
+        //Primero se bloquea el botón Enviar y se añade el mensaje del usuario
         if (text !== "" && !sendBtn.disabled) {
             setChatLock(true);
             
@@ -43,7 +44,8 @@ function initChatLogic() {
             appendMessageToDOM("user", text);
             userInput.value = "";
             showTypingIndicator();
-
+            
+            //Se define el payload
             const limitedMessages = messages.slice(-8);
 
             const payload = {
@@ -53,6 +55,7 @@ function initChatLogic() {
                 messages: limitedMessages 
             };
 
+            //Se envía payload a la API
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
@@ -63,21 +66,23 @@ function initChatLogic() {
                 if (!response.ok) throw new Error('Network response was not ok');
 
                 const data = await response.json();
-
+                
+                //Se logean tokens usados
                 const usage = data.usage || {};
                 console.log(`[Tokens] input: ${usage.input_tokens}, output: ${usage.output_tokens}`);
-
+                
+                //Se recibe respuesta, se añade el mensaje al chat
                 const aiResponse = data.reply;
                 hideTypingIndicator();
                 
                 messages.push({ sender: "ai", text: aiResponse });
                 appendMessageToDOM("ai", aiResponse);
-
-            } catch (error) {
+            
+            } catch (error) { //Caso de error
                 hideTypingIndicator();
                 appendMessageToDOM("ai", "Mis mensajeros han sido interceptados. Prueba de nuevo.");
                 console.error("Chat Error:", error);
-            } finally {
+            } finally { //Se habilita botón Enviar
                 setChatLock(false);
             }
         }
@@ -88,6 +93,8 @@ function initChatLogic() {
         if (e.key === "Enter") handleSend();
     });
 }
+
+//------------Funciones-------------
 
 function appendMessageToDOM(sender, text) {
     const chatWindow = document.querySelector("#chat-window");

@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export default async function handler(req, res) {
+  //Primero validamos
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
@@ -11,7 +12,8 @@ export default async function handler(req, res) {
       model: "gemini-2.5-flash",
       systemInstruction: system
     });
-
+    
+    //Se define lógica para máximo de mensajes en contexto
     const limitedMessages = messages.slice(-8); 
 
     const lastMessage = limitedMessages[limitedMessages.length - 1].text;
@@ -28,7 +30,8 @@ export default async function handler(req, res) {
     const result = await chat.sendMessage(lastMessage);
     const response = await result.response;
     const text = response.text();
-
+    
+    //Se devuelve el texto plano y los tokens usados
     return res.status(200).json({ 
       reply: text,
       usage: {
