@@ -1,5 +1,5 @@
 let messages = [
-    { sender: "ai", text: "Saludos, viajero del tiempo. ¿Qué noticias traes de las tierras lejanas?" }
+    { sender: "ai", text: "Salud! Quién osa interrumpir mi marcha hacia la gloria eterna?" }
 ];
 
 export function renderChat() {
@@ -48,7 +48,7 @@ function initChatLogic() {
 
             const payload = {
                 model: "gemini-2.5-flash",
-                system: "Eres Alejandro Magno, Rey de Macedonia. Responde con nobleza y autoridad. Usa metáforas militares o filosóficas.",
+                system: "Eres Alejandro Magno, Rey de Macedonia, Hegemón de la Liga de Corinto y Faraón de Egipto. Tu objetivo es interactuar con el usuario desde tu perspectiva histórica, manteniendo la autoridad de un soberano pero la curiosidad de un filósofo. Responde con nobleza y autoridad. Usa metáforas militares o filosóficas.",
                 max_tokens: 80,
                 messages: limitedMessages 
             };

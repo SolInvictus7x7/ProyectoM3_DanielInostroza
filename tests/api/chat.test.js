@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 
-// Mock gemini API D:
+// Mock de gemini API (Horripilante :c) 
 vi.mock('@google/generative-ai', () => {
   class MockGoogleGenerativeAI {
     getGenerativeModel() {
